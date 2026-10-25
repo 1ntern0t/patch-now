@@ -1,0 +1,10 @@
+{
+  "id": "FIXTURE-2026-0005",
+  "modified": "2026-01-01T00:00:00Z",
+  "withdrawn": "2026-01-02T00:00:00Z",
+  "summary": "FIXTURE: withdrawn record, must be ignored",
+  "affected": [{
+    "package": { "ecosystem": "npm", "name": "fixture-left-pad" },
+    "ranges": [{ "type": "SEMVER", "events": [{ "introduced": "0" }] }]
+  }]
+}

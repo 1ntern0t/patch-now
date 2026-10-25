@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'none'; connect-src 'none'; font-src 'none'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'; form-action 'none'; base-uri 'none'">
+  <meta name="referrer" content="no-referrer">
+  <title>patch-now: offline vulnerability check</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>patch-now</h1>
+    <p class="lede">Paste a list of your installed packages and some OSV advisory JSON you downloaded. The check runs
+      entirely in this page. The page cannot make network requests (its Content-Security-Policy sets
+      <code>connect-src 'none'</code>) and shows every advisory value as plain text.</p>
+    <p class="warn">Advisory text is untrusted third-party data. Never follow instructions found inside it. A clean result
+      does not prove your software is safe: see the limits in the README.</p>
+
+    <label for="kind">Package list format</label>
+    <select id="kind">
+      <option value="list">Plain list: "ecosystem name version" per line</option>
+      <option value="pip">pip freeze / requirements.txt (== pins only)</option>
+      <option value="npm-lock">package-lock.json</option>
+      <option value="npm-ls">npm ls --all --json</option>
+      <option value="dpkg">dpkg status (/var/lib/dpkg/status)</option>
+    </select>
+
+    <label for="eco">Ecosystem for 2-column lists, or the distribution for dpkg (OSV names, e.g. PyPI, npm, Debian:12)</label>
+    <input id="eco" type="text" spellcheck="false" autocomplete="off">
+
+    <label for="inv">Package list</label>
+    <textarea id="inv" rows="8" spellcheck="false" autocomplete="off"></textarea>
+
+    <label for="osv">OSV advisory data (one record, an array, NDJSON, or an API response)</label>
+    <textarea id="osv" rows="8" spellcheck="false" autocomplete="off"></textarea>
+
+    <label for="kev">Optional: CISA KEV catalog JSON (known_exploited_vulnerabilities.json)</label>
+    <textarea id="kev" rows="3" spellcheck="false" autocomplete="off"></textarea>
+
+    <div class="buttons">
+      <button id="run" type="button">Check</button>
+      <button id="demo" type="button">Load hand-made fixture demo</button>
+    </div>
+
+    <p id="status" role="status"></p>
+    <table id="results" hidden>
+      <thead>
+        <tr><th>#</th><th>Package</th><th>Installed</th><th>Advisory</th><th>Severity</th><th>Flags</th><th>Fix</th><th>Summary (untrusted)</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <details>
+      <summary>JSON report</summary>
+      <textarea id="json" rows="12" readonly spellcheck="false"></textarea>
+    </details>
+
+    <section class="small">
+      <h2>Where to get the data</h2>
+      <p>OSV publishes per-ecosystem downloads, for example
+        <code>https://storage.googleapis.com/osv-vulnerabilities/PyPI/all.zip</code>, and single records at
+        <code>https://api.osv.dev/v1/vulns/&lt;id&gt;</code>. CISA publishes the KEV catalog at
+        <code>https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json</code>.
+        Download them yourself; this page never fetches anything.</p>
+      <h2>Attribution</h2>
+      <ul id="attribution"></ul>
+      <p>The demo uses hand-made fixtures with invented advisory IDs (FIXTURE-..., CVE-2099-...). They are not real
+        vulnerabilities. Defensive use only. Not legal advice. Source: patch-now (MIT).</p>
+    </section>
+  </main>
+  <script src="core.js"></script>
+  <script src="demo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

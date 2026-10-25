@@ -1,0 +1,5 @@
+fixturelib==2.4.1
+Fixture_Other.Lib==1.0rc1
+fixture-ok==3.0
+-e git+https://example.invalid/fixture.git#egg=fixture-editable
+fixture-url @ file:///tmp/fixture_url-1.0-py3-none-any.whl

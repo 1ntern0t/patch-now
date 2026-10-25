@@ -1,0 +1,9 @@
+{
+  "id": "MAL-2099-0001",
+  "modified": "2026-01-01T00:00:00Z",
+  "summary": "FIXTURE: malicious code in fixture-evil-pkg",
+  "affected": [{
+    "package": { "ecosystem": "npm", "name": "fixture-evil-pkg" },
+    "versions": ["0.0.1", "0.0.2"]
+  }]
+}

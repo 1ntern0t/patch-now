@@ -1,0 +1,13 @@
+{
+  "name": "fixture-app",
+  "version": "1.0.0",
+  "dependencies": {
+    "fixture-left-pad": {
+      "version": "1.2.0",
+      "dependencies": {
+        "fixture-deep": { "version": "3.1.4" }
+      }
+    },
+    "fixture-missing": { "missing": true, "required": "^1.0.0" }
+  }
+}

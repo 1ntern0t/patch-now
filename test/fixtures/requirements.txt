@@ -1,0 +1,7 @@
+# FIXTURE requirements file
+fixturelib==2.4.1 ; python_version >= "3.8"   # pinned
+fixture-extra[security,socks]==1.0.0 \
+    --hash=sha256:0000000000000000000000000000000000000000000000000000000000000000
+fixture-range>=1.0,<2
+fixture-wild==1.*
+-r other-requirements.txt

@@ -1,0 +1,11 @@
+{
+  "id": "FIXTURE-2026-0002",
+  "modified": "2026-01-01T00:00:00Z",
+  "aliases": ["CVE-2099-0002"],
+  "summary": "FIXTURE: medium issue in fixturelib",
+  "database_specific": { "severity": "MODERATE" },
+  "affected": [{
+    "package": { "ecosystem": "PyPI", "name": "FixtureLib" },
+    "ranges": [{ "type": "ECOSYSTEM", "events": [{ "introduced": "2.0" }, { "fixed": "2.4.2" }, { "introduced": "3.0a1" }, { "fixed": "3.0.1" }] }]
+  }]
+}

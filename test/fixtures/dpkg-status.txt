@@ -1,0 +1,33 @@
+Package: fixture-libssl3
+Status: install ok installed
+Priority: optional
+Section: libs
+Installed-Size: 6000
+Maintainer: Fixture Maintainer <fixture@example.invalid>
+Architecture: amd64
+Multi-Arch: same
+Source: fixture-openssl (3.0.11-1~deb12u1)
+Version: 3.0.11-1~deb12u1+b1
+Description: FIXTURE library
+ Long description line one.
+ .
+ Long description line two with a colon: still a continuation.
+
+Package: fixture-curl
+Status: install ok installed
+Architecture: amd64
+Version: 7.88.1-10+deb12u5
+Description: FIXTURE tool
+
+Package: fixture-removed
+Status: deinstall ok config-files
+Architecture: amd64
+Version: 1.0-1
+Description: removed, only config files left; must NOT be counted
+
+Package: fixture-zlib1g
+Status: install ok installed
+Architecture: amd64
+Source: fixture-zlib
+Version: 1:1.2.13.dfsg-1
+Description: FIXTURE compression

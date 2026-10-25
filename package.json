@@ -1,0 +1,24 @@
+{
+  "name": "patch-now",
+  "version": "0.1.0",
+  "description": "Local-first check of installed packages against public OSV advisories (plus CISA KEV). Zero dependencies, no telemetry, offline by default.",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "patch-now": "bin/patch-now.js"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "build-docs": "node scripts/build-docs.js",
+    "cross-check": "node scripts/cross-check.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "author": "1ntern0t",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1ntern0t/patch-now.git"
+  }
+}

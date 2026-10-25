@@ -1,0 +1,35 @@
+# GitHub Actions workflow. Lives in ci/ because the token used to create this
+# repository may lack the `workflow` scope. To enable it, a maintainer copies it
+# to .github/workflows/test.yml.
+name: test
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: node --test test/*.test.js
+      - name: cross-check version ordering against dpkg and Python packaging
+        run: |
+          pip install packaging
+          node scripts/cross-check.mjs
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

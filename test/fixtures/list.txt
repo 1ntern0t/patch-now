@@ -1,0 +1,5 @@
+# ecosystem name version  (FIXTURE)
+crates.io fixture-crate 0.9.0
+Go example.invalid/fixture/mod v1.4.0
+PyPI Fixture_Lib 2.4.1
+just-two-columns 1.0

@@ -1,0 +1,14 @@
+# Never commit key material or real advisory dumps.
+*.key
+*.pem
+*.p8
+secrets/
+node_modules/
+# Real OSV/KEV downloads stay local: they are third-party data with their own
+# licenses (see docs/LEGAL.md). Only hand-made fixtures are committed.
+*.zip
+osv-data/
+osv-saved*.json
+kev.json
+!test/fixtures/kev.json
+patch-now-report*

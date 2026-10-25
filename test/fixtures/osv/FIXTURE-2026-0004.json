@@ -1,0 +1,9 @@
+{
+  "id": "FIXTURE-2026-0004",
+  "modified": "2026-01-01T00:00:00Z",
+  "summary": "FIXTURE: already fixed in installed fixture-curl",
+  "affected": [{
+    "package": { "ecosystem": "Debian:12", "name": "fixture-curl" },
+    "ranges": [{ "type": "ECOSYSTEM", "events": [{ "introduced": "0" }, { "fixed": "7.88.1-10+deb12u1" }] }]
+  }]
+}
