@@ -191,3 +191,33 @@ test('OSV directory walk: total entry limit', async () => {
   await assert.rejects(loadOsvPath(dir, createIndex(), null, { osvDirFileBytes: 1024, osvDirFiles: 100, osvDirDepth: 4, osvDirEntries: 10, osvFileBytes: 1e6 }), InputError);
   rmSync(dir, { recursive: true, force: true });
 });
+
+test('cli: --fixable-only hides findings with no fixed version but keeps KEV and malicious ones', () => {
+  const base = ['scan', ...ALL_INV, '--osv', fixturePath('osv'), '--kev', fixturePath('kev.json'), '--format', 'json'];
+  const all = JSON.parse(run(...base).stdout);
+  assert.equal(all.summary.with_fix_available, 3);
+  assert.equal(all.summary.hidden_without_fix, 0);
+  const r = run(...base, '--fixable-only');
+  assert.equal(r.status, 1, r.stderr);
+  const rep = JSON.parse(r.stdout);
+  // FIXTURE-2026-0006 (last_affected, no fix) is hidden; MAL-2099-0001 has no fix but stays.
+  assert.deepEqual(rep.findings.map((f) => f.id), ['FIXTURE-2026-0002', 'MAL-2099-0001', 'FIXTURE-2026-0001', 'FIXTURE-2026-0003']);
+  assert.deepEqual(rep.findings.map((f) => f.priority), [1, 2, 3, 4]);
+  assert.equal(rep.summary.findings, 4);
+  assert.equal(rep.summary.hidden_without_fix, 1);
+  const text = run(...base.slice(0, -2), '--fixable-only').stdout;
+  assert.match(text, /1 findings with no fixed version yet were hidden \(--fixable-only\)/);
+  assert.match(text, /3 of 4 findings list a fixed version/);
+});
+
+test('cli: --fixable-only exits 0 when the only findings have no fix', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'pn-fix-'));
+  const list = join(dir, 'list.txt');
+  writeFileSync(list, 'crates.io fixture-crate 0.7.0\n');
+  const args = ['scan', '--list', list, '--osv', fixturePath('osv'), '--no-kev', '--format', 'json'];
+  assert.equal(run(...args).status, 1);
+  const r = run(...args, '--fixable-only');
+  assert.equal(r.status, 0, r.stderr);
+  assert.equal(JSON.parse(r.stdout).findings.length, 0);
+  rmSync(dir, { recursive: true, force: true });
+});

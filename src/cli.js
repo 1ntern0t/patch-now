@@ -40,6 +40,8 @@ Output:
   --format text|json     default text
   --out <file>           write the report to a new file (refuses to overwrite unless --force)
   --force
+  --fixable-only         hide findings that have no fixed version yet (known-exploited and
+                         malicious-package findings are always shown); exit code follows what is shown
   -h, --help / -v, --version
 
 Exit codes: 0 no known vulnerabilities matched, 1 findings, 2 usage or input error.
@@ -64,6 +66,7 @@ const OPTIONS = {
   format: { type: 'string' },
   out: { type: 'string' },
   force: { type: 'boolean' },
+  'fixable-only': { type: 'boolean' },
   help: { type: 'boolean', short: 'h' },
   version: { type: 'boolean', short: 'v' }
 };
@@ -227,7 +230,8 @@ export async function main(argv, io = defaultIo(), deps = {}) {
       findings,
       kev,
       mode: v.online ? 'online' : 'offline',
-      osvInfo: { sources, records_used: index.count }
+      osvInfo: { sources, records_used: index.count },
+      fixableOnly: !!v['fixable-only']
     });
     await emit(format === 'json' ? renderJson(report) : renderText(report), v, io);
     return report.findings.length ? 1 : 0;

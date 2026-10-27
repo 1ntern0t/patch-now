@@ -52,6 +52,11 @@ With `--online --save-osv records.ndjson` the fetched records are saved for late
 
 Exit codes: `0` nothing matched, `1` findings, `2` usage or input error.
 
+**Only what you can act on:** distro feeds list many CVEs that have no fixed package yet. On a stock Debian 13
+container, 1,473 of 1,474 findings had no fixed version. `--fixable-only` hides those (known-exploited and
+malicious-package findings are always kept), and the exit code then follows what is shown. The summary
+always says how many findings list a fix and how many were hidden.
+
 ## What the report shows
 
 Findings are ordered: **known exploited (CISA KEV) first**, then **malicious packages** (OSV `MAL-` records:
