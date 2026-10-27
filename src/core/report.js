@@ -111,9 +111,16 @@ export function mergeAliases(list) {
   return out;
 }
 
-export function buildReport({ inventory, findings, kev, mode, osvInfo, now = new Date() }) {
+const hasFix = (f) => f.fixed_versions.length > 0;
+
+// fixableOnly hides confirmed findings that have no fixed version yet, because there is nothing to
+// update to. Known-exploited and malicious-package findings are always kept.
+export function buildReport({ inventory, findings, kev, mode, osvInfo, fixableOnly = false, now = new Date() }) {
   const all = mergeAliases(findings.map((f) => toFinding(f, kev)));
-  const confirmed = all.filter((f) => f.match.status === 'affected').sort(compareFindings);
+  const affected = all.filter((f) => f.match.status === 'affected').sort(compareFindings);
+  const keep = (f) => !fixableOnly || hasFix(f) || f.known_exploited || f.malicious_package;
+  const confirmed = affected.filter(keep);
+  const hiddenWithoutFix = affected.length - confirmed.length;
   const undetermined = all.filter((f) => f.match.status !== 'affected').sort(compareFindings);
   confirmed.forEach((f, i) => {
     f.priority = i + 1;
@@ -139,6 +146,8 @@ export function buildReport({ inventory, findings, kev, mode, osvInfo, now = new
       known_exploited: confirmed.filter((f) => f.known_exploited).length,
       malicious_packages: confirmed.filter((f) => f.malicious_package).length,
       approximate_matches: confirmed.filter((f) => f.match.approximate).length,
+      with_fix_available: confirmed.filter(hasFix).length,
+      hidden_without_fix: hiddenWithoutFix,
       by_rating: byRating,
       undetermined: undetermined.length,
       skipped_entries: inventory.skippedCount ?? inventory.skipped.length
@@ -162,6 +171,8 @@ export function renderText(report) {
   out.push(`${TOOL_NAME} ${TOOL_VERSION}  (${report.mode} mode, ${t(report.generated, 40)})`);
   out.push(`Checked ${s.packages_checked} packages: ${s.findings} findings in ${s.packages_with_findings} packages` +
     ` (known exploited: ${s.known_exploited}, malicious packages: ${s.malicious_packages}, approximate matches: ${s.approximate_matches}).`);
+  if (s.findings) out.push(`${s.with_fix_available} of ${s.findings} findings list a fixed version you can update to.`);
+  if (s.hidden_without_fix) out.push(`${s.hidden_without_fix} findings with no fixed version yet were hidden (--fixable-only).`);
   if (s.undetermined) out.push(`${s.undetermined} advisories could not be decided (see "Could not decide" below).`);
   if (s.skipped_entries) out.push(`${s.skipped_entries} inventory entries were skipped (no exact version or unparseable).`);
   out.push('');
