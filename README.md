@@ -167,7 +167,7 @@ src/online.js         the only code that touches the network (--online)
 docs/                 static page (index.html, app.js, generated core.js), LEGAL.md
 scripts/              build-docs.js, cross-check.mjs, browser-check.mjs
 test/                 node:test suites and hand-made fixtures
-ci/test.yml           GitHub Actions workflow, to be copied to .github/workflows/ by a maintainer
+.github/workflows/test.yml  GitHub Actions on push to main and on pull requests
 ```
 
 After changing `src/core`, run `node scripts/build-docs.js` (a test fails if `docs/core.js` is stale).
