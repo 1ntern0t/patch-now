@@ -25,7 +25,7 @@ wrong and what the code does about it. File references point at the code that im
 | T10 | Network attacker or hostile server | `--online` | HTTPS only, two allow-listed hosts, no redirects, no credentials or ports in URLs, per-request timeout, per-response size caps, a 512 MB total download budget, at most 5,000 records and 10 pagination rounds. Advisory ids are validated before being put in a URL. Responses go through the same validation as offline data. | `src/online.js` |
 | T11 | Privacy leak | `--online` | Opt-in only; payload limited to name, ecosystem and version; `show-query` prints it without sending. The web page cannot make requests. | `src/online.js`, `docs/LEGAL.md` |
 | T12 | Wrong "all clear" | Parsing or comparison bugs | Per-ecosystem comparators (semver, PEP 440, dpkg) cross-checked against reference implementations; results that cannot be compared are reported as "could not decide" instead of being dropped; approximate comparisons are labelled; withdrawn records are ignored; the README lists known blind spots. | `src/core/compare.js`, `scripts/cross-check.mjs` |
-| T13 | Secrets in the repository | Development mistakes | No credentials are needed or stored. gitleaks runs before commits and in CI. | `ci/test.yml` |
+| T13 | Secrets in the repository | Development mistakes | No credentials are needed or stored. gitleaks runs before commits and in CI. | `.github/workflows/test.yml` |
 
 ## Out of scope
 

@@ -2,6 +2,9 @@
 
 ## Unreleased (2026-10-27)
 
+### Changed
+- GitHub Actions runs the existing test workflow from `.github/workflows/test.yml` on pushes to `main` and on pull requests. `actions/checkout` and `actions/setup-node` are v5, and `gitleaks/gitleaks-action` is v3, because the previous majors require the Node 20 runner that GitHub removed.
+
 ### Added
 - `--fixable-only` hides confirmed findings that have no fixed version yet. Findings flagged as known
   exploited (KEV) or as malicious packages are always kept. Priorities are renumbered, and the exit code
